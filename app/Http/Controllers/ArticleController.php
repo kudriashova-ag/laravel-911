@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Article;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
-class CategoryController extends Controller
+class ArticleController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +15,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
-        return view('categories.index', compact('categories'));
+        $articles = Article::paginate(3);
+        return view('articles.index', compact('articles'));
     }
 
     /**
@@ -25,7 +26,8 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('categories.create');
+        $categories = Category::all();
+        return view('articles.create', compact('categories'));
     }
 
     /**
@@ -37,13 +39,27 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'=> 'required|min:3|max:100'
+            'name' => 'required|min:3|max:100',
+            'content' => 'required',
+            'category' => 'exists:categories,id'
         ]);
 
-        $category = new Category();
-        $category->name = $request->name;
-        $category->save();
-        return redirect()->route('categories.index')->with('success', 'Category ' . $category->id . ' added!');
+        // $article = new Article();
+        // $article->name = $request->name;
+        // $article->content = $request->content;
+        // $article->category_id = $request->category;
+        // $article->save();
+
+        // $article = Article::create([
+        //     'name'=> $request->name,
+        //     'content'=> $request->content,
+        //     'category_id'=> $request->category,
+        // ]);
+
+        $article = Article::create($request->all());
+
+        return redirect()->route('articles.index')->with('success', 'Article ' . $article->id . ' added!');
+        
     }
 
     /**
@@ -65,8 +81,9 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        $category = Category::findOrFail($id);
-        return view('categories.edit', compact('category'));
+        $article = Article::findOrFail($id);
+        $categories = Category::all();
+        return view('articles.edit', compact('article', 'categories'));
     }
 
     /**
@@ -79,13 +96,14 @@ class CategoryController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required|min:3|max:100'
+            'name' => 'required|min:3|max:100',
+            'content' => 'required',
+            'category' => 'exists:categories,id'
         ]);
+        $article = Article::find($id);
+        $article->update($request->all());
 
-        $category = Category::findOrFail($id);
-        $category->name = $request->name;
-        $category->save();
-        return redirect()->route('categories.index')->with('success', 'Category ' . $category->id . ' edited!');
+        return redirect()->route('articles.index')->with('success', 'Article ' . $article->id . ' added!');
     }
 
     /**
@@ -96,8 +114,6 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $category = Category::findOrFail($id);
-        $category->delete();
-        return redirect()->route('categories.index')->with('success', 'Category ' . $category->id . ' deleted!');
+        //
     }
 }

@@ -17,6 +17,7 @@
       <tr>
         <th>#</th>
         <th>Name</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -26,6 +27,14 @@
         <td>{{$loop->iteration}}</td>
         <td>
           <a href="{{route('categories.edit', ['category'=>$category->id])}}">{{$category->name}}</a>
+          <span class="badge text-bg-secondary">{{$category->articles->count()}}</span>
+        </td>
+        <td>
+          <form action="{{route('categories.destroy', ['category'=>$category->id])}}" method="POST">
+            @method('DELETE')
+            @csrf
+            <button class="btn btn-danger">Delete</button>
+          </form>
         </td>
       </tr>
       @endforeach
