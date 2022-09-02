@@ -56,8 +56,14 @@ class ArticleController extends Controller
         //     'category_id'=> $request->category,
         // ]);
 
-        $article = Article::create($request->all());
+        //$article = Article::create($request->all());
+        
+        $file = $request->file('image');
+        $fName = $file->getClientOriginalName();
+        $file->move('/public/uploads', $fName);
+        dd($file);
 
+        
         return redirect()->route('articles.index')->with('success', 'Article ' . $article->id . ' added!');
         
     }

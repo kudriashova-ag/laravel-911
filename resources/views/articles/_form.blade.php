@@ -26,3 +26,9 @@
     <div class="invalid-feedback">{{$message}}</div>
   @enderror
 </div>
+
+
+<div class="form-group mt-3">
+  <label for="image">Image:</label>
+  <input type="file" name="image" id="image" class="form-control">
+</div>
