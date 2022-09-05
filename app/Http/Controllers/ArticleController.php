@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Article;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ArticleController extends Controller
 {
@@ -56,16 +57,16 @@ class ArticleController extends Controller
         //     'category_id'=> $request->category,
         // ]);
 
-        //$article = Article::create($request->all());
+        $article = Article::create($request->all());
         
         $file = $request->file('image');
-        $fName = $file->getClientOriginalName();
-        $file->move('/public/uploads', $fName);
-        dd($file);
-
-        
+        if($file){
+            $fName = $file->getClientOriginalName();
+            $file->move(Storage::path('public/uploads/'), $fName);
+            $article->image = 'public/uploads/' . $fName;
+            $article->save();
+        }
         return redirect()->route('articles.index')->with('success', 'Article ' . $article->id . ' added!');
-        
     }
 
     /**

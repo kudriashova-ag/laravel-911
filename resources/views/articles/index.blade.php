@@ -28,7 +28,9 @@
       @foreach ($articles as $article)
       <tr>
         <td>{{$loop->iteration + ($articles->currentPage() - 1) * $articles->perPage()}}</td>
-        <td><img src="{{$article->image}}" alt="{{$article->name}}" style="width: 100px"></td>
+        <td>
+          <img src="{{Storage::url($article->image)}}" alt="{{$article->name}}" style="width: 100px">
+        </td>
         <td>
           <a href="{{route('articles.edit', ['article'=>$article->id])}}">{{$article->name}}</a>
         </td>
