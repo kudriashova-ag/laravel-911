@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -15,7 +16,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::all();
-        return view('categories.index', compact('categories'));
+        return view('admin.categories.index', compact('categories'));
     }
 
     /**
@@ -25,7 +26,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('categories.create');
+        return view('admin.categories.create');
     }
 
     /**
@@ -43,7 +44,7 @@ class CategoryController extends Controller
         $category = new Category();
         $category->name = $request->name;
         $category->save();
-        return redirect()->route('categories.index')->with('success', 'Category ' . $category->id . ' added!');
+        return redirect()->route('admin.categories.index')->with('success', 'Category ' . $category->id . ' added!');
     }
 
     /**
@@ -66,7 +67,7 @@ class CategoryController extends Controller
     public function edit($id)
     {
         $category = Category::findOrFail($id);
-        return view('categories.edit', compact('category'));
+        return view('admin.categories.edit', compact('category'));
     }
 
     /**
@@ -85,7 +86,7 @@ class CategoryController extends Controller
         $category = Category::findOrFail($id);
         $category->name = $request->name;
         $category->save();
-        return redirect()->route('categories.index')->with('success', 'Category ' . $category->id . ' edited!');
+        return redirect()->route('admin.categories.index')->with('success', 'Category ' . $category->id . ' edited!');
     }
 
     /**
@@ -98,6 +99,6 @@ class CategoryController extends Controller
     {
         $category = Category::findOrFail($id);
         $category->delete();
-        return redirect()->route('categories.index')->with('success', 'Category ' . $category->id . ' deleted!');
+        return redirect()->route('admin.categories.index')->with('success', 'Category ' . $category->id . ' deleted!');
     }
 }

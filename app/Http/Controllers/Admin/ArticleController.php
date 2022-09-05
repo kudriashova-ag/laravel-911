@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -17,7 +18,7 @@ class ArticleController extends Controller
     public function index()
     {
         $articles = Article::paginate(3);
-        return view('articles.index', compact('articles'));
+        return view('admin.articles.index', compact('articles'));
     }
 
     /**
@@ -28,7 +29,7 @@ class ArticleController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('articles.create', compact('categories'));
+        return view('admin.articles.create', compact('categories'));
     }
 
     /**
@@ -66,7 +67,7 @@ class ArticleController extends Controller
             $article->image = 'public/uploads/' . $fName;
             $article->save();
         }
-        return redirect()->route('articles.index')->with('success', 'Article ' . $article->id . ' added!');
+        return redirect()->route('admin.articles.index')->with('success', 'Article ' . $article->id . ' added!');
     }
 
     /**
@@ -90,7 +91,7 @@ class ArticleController extends Controller
     {
         $article = Article::findOrFail($id);
         $categories = Category::all();
-        return view('articles.edit', compact('article', 'categories'));
+        return view('admin.articles.edit', compact('article', 'categories'));
     }
 
     /**
@@ -110,7 +111,7 @@ class ArticleController extends Controller
         $article = Article::find($id);
         $article->update($request->all());
 
-        return redirect()->route('articles.index')->with('success', 'Article ' . $article->id . ' added!');
+        return redirect()->route('admin.articles.index')->with('success', 'Article ' . $article->id . ' added!');
     }
 
     /**

@@ -1,4 +1,4 @@
-@extends('main')
+@extends('layouts.admin')
 
 @section('content')
   <h1>Edit article</h1>
@@ -7,7 +7,7 @@
     @method('PUT')
     @csrf
 
-   @include('articles._form')
+   @include('admin.articles._form')
 
     <button class="btn btn-primary mt-3">Save</button>
   </form>

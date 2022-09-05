@@ -73,7 +73,18 @@
         </nav>
 
         <main class="py-4">
-            @yield('content')
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <nav class="nav flex-column">
+                            <a class="nav-link active" href="/administrator">Dashboard</a>
+                            <a class="nav-link" href="{{route('categories.index')}}">Categories</a>
+                            <a class="nav-link" href="{{route('articles.index')}}">Articles</a>
+                        </nav>
+                    </div>
+                    <div class="col-md-8">@yield('content')</div>
+                </div>
+            </div>
         </main>
     </div>
 </body>

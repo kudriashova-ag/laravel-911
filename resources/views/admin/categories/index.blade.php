@@ -1,4 +1,4 @@
-@extends('main')
+@extends('layouts.admin')
 
 @section('content')
   <h1>Categories</h1>
