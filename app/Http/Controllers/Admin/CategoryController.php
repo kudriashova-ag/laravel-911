@@ -44,7 +44,7 @@ class CategoryController extends Controller
         $category = new Category();
         $category->name = $request->name;
         $category->save();
-        return redirect()->route('admin.categories.index')->with('success', 'Category ' . $category->id . ' added!');
+        return redirect()->route('categories.index')->with('success', 'Category ' . $category->id . ' added!');
     }
 
     /**
@@ -86,7 +86,7 @@ class CategoryController extends Controller
         $category = Category::findOrFail($id);
         $category->name = $request->name;
         $category->save();
-        return redirect()->route('admin.categories.index')->with('success', 'Category ' . $category->id . ' edited!');
+        return redirect()->route('categories.index')->with('success', 'Category ' . $category->id . ' edited!');
     }
 
     /**

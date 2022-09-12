@@ -72,9 +72,23 @@
             </div>
         </nav>
 
-        <main class="py-4">
-            @yield('content')
-        </main>
+        <div class="py-4 container">
+            <div class="row">
+
+                <div class="col-md-4">
+                    <ul class="nav nav-pills">
+                        @foreach ($categoriesInSidebar as $category)
+                            <li class="nav-item">
+                                <a href="/category/{{$category->slug}}" class="nav-link">{{$category->name}}</a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+
+                <div class="col-md-8">@yield('content')</div>
+            </div>
+            
+        </div>
     </div>
 </body>
 </html>

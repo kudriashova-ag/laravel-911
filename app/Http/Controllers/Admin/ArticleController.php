@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\Category;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -29,7 +30,8 @@ class ArticleController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('admin.articles.create', compact('categories'));
+        $tags = Tag::all();
+        return view('admin.articles.create', compact('categories', 'tags'));
     }
 
     /**
@@ -46,28 +48,13 @@ class ArticleController extends Controller
             'category' => 'exists:categories,id'
         ]);
 
-        // $article = new Article();
-        // $article->name = $request->name;
-        // $article->content = $request->content;
-        // $article->category_id = $request->category;
-        // $article->save();
 
-        // $article = Article::create([
-        //     'name'=> $request->name,
-        //     'content'=> $request->content,
-        //     'category_id'=> $request->category,
-        // ]);
-
+       
         $article = Article::create($request->all());
-        
-        $file = $request->file('image');
-        if($file){
-            $fName = $file->getClientOriginalName();
-            $file->move(Storage::path('public/uploads/'), $fName);
-            $article->image = 'public/uploads/' . $fName;
-            $article->save();
-        }
-        return redirect()->route('admin.articles.index')->with('success', 'Article ' . $article->id . ' added!');
+
+        $article->tags()->sync($request->tag);
+
+        return redirect()->route('articles.index')->with('success', 'Article ' . $article->id . ' added!');
     }
 
     /**
@@ -91,7 +78,8 @@ class ArticleController extends Controller
     {
         $article = Article::findOrFail($id);
         $categories = Category::all();
-        return view('admin.articles.edit', compact('article', 'categories'));
+        $tags = Tag::all();
+        return view('admin.articles.edit', compact('article', 'categories', 'tags'));
     }
 
     /**
@@ -110,8 +98,8 @@ class ArticleController extends Controller
         ]);
         $article = Article::find($id);
         $article->update($request->all());
-
-        return redirect()->route('admin.articles.index')->with('success', 'Article ' . $article->id . ' added!');
+        $article->tags()->sync($request->tag);
+        return redirect()->route('articles.index')->with('success', 'Article ' . $article->id . ' added!');
     }
 
     /**
@@ -122,6 +110,7 @@ class ArticleController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Article::find($id)->delete();
+        return redirect()->route('articles.index');
     }
 }

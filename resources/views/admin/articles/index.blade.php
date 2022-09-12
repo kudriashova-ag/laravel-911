@@ -34,7 +34,7 @@
         <td>
           <a href="{{route('articles.edit', ['article'=>$article->id])}}">{{$article->name}}</a>
         </td>
-        <td>{{$article->content}}</td>
+        <td>{!!$article->shortContent!!}</td>
         <td>{{$article->category->name}}</td>
 
         <td>
